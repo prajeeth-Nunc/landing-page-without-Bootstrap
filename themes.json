@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "class": "round mx-2 border border-dark pointer",
+    "bgcolor": "orangered",
+    "color":"white"
+  },
+  {
+    "id": "2",
+    "class": "round mx-2 border border-dark pointer",
+    "bgcolor": "DodgerBlue",
+    "color":"white"
+  },
+  {
+    "id": "3",
+    "class": "round mx-2 border border-dark pointer",
+    "bgcolor": "CadetBlue",
+    "color":"white"
+  },
+  {
+    "id": "4",
+    "class": "round mx-2 border border-dark pointer",
+    "bgcolor": "#86C232",
+    "color":"#222629"
+  },
+  {
+    "id": "5",
+    "class": "round mx-2 border border-dark pointer",
+    "bgcolor": "MediumSlateBlue",
+    "color":"white"
+  }
+]

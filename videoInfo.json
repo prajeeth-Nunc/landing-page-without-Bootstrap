@@ -1,0 +1,51 @@
+[
+    {
+        "id":1,
+        "Title" : "One Day At A Time",
+        "Description":"Seven By M.S Dhoni",
+        "Video": "videos/Seven By M.S Dhoni.mp4",
+        "Poster":"images/seven_by_MSD.png"
+    },
+    {
+        "id":2,
+        "Title" : "The Seed",
+        "Description":"Once the seed of faith takes root, it cannot be blown away, even by the strongest wind – Now that’s a blessing.",
+        "Video": "videos/The_Seed.mp4",
+        "Poster":"images/the_seed.png"
+    },
+    {
+        "id":3,
+        "Title" : "Winners never quit",
+        "Description":"Your hardest times often lead to the greatest moments of your life. Keep going. Tough situations build strong people in the end.",
+        "Video": "videos/Winners never Quit.mp4",
+        "Poster":"images/winners_never_quit.png"
+    },
+    {
+        "id":4,
+        "Title" : "Autonomus",
+        "Description":"AUTONOMOUS is an animated cyberpunk thriller centered around a motorcycle gang of traffickers in a world of autonomous vehicles. Yuri and her brother Nyx face off against the Metro Task Force as they transport an important package to a client. ",
+        "Video": "videos/AUTONOMOUS.mp4",
+        "Poster":"images/autonomous.png"
+    },
+    {
+        "id":5,
+        "Title" : "The Present",
+        "Description":"The film tells the story of a boy who rather spends his time indoors playing videogames instead of discovering what’s waiting outside. One day his Mum decides to get a little surprise for her son, which makes it hard for him to concentrate on his video game any longer.",
+        "Video": "videos/The Present.mp4",
+        "Poster":"images/the_present.png"
+    },
+    {
+        "id":6,
+        "Title" : "wildebeest",
+        "Description":"A couple of wildebeest contemplate crossing a river.",
+        "Video": "videos/Wildebeest.mp4",
+        "Poster":"images/wildebeest.png"
+    },
+    {
+        "id":7,
+        "Title" : "carpark",
+        "Description":"carpark",
+        "Video": "videos/Carpark.mp4",
+        "Poster":"images/carpark.png"
+    }
+]

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
+  <title>without Bootstrap</title>
+</head>
+
+<body>
+  <!-- fixed-top flex-container -->
+  <nav class="navbar bg-theme fixed-top">
+    <div class="container flex-container space-btw">
+      <a class="nav-brand">Ford ECO SPORT 2020</a>
+      <a class="hamburger btn btn-dark" onclick="handleNavInMob()"><i class="fa fa-bars"></i></a>
+      <div id="navbar-items" class="navbar-nav show">
+        <ul class="nav-items">
+          <li>
+            <a class="nav-link active">Home</a>
+          </li>
+          <li>
+            <a class="nav-link">About</a>
+          </li>
+          <li>
+            <a class="nav-link">How it Works</a>
+          </li>
+          <li>
+            <a class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container wrapper" style="margin-top: 4rem;">
+    <div class="theme-container pt-3"></div>
+
+    <div class="row mt-3 flex-container">
+      <div class="col-xl-8 col-md-7 col-12">
+        <div class="flex-container user-details">
+          <i class="fa fa-user-circle fa-5x text-secondary mx-3"
+            style="background: white; border-radius:50rem!important;"></i>
+          <div>
+            <p><strong class="theme">John Hopkins</strong></p>
+            <small class="text-secondary">Great Car Dealer Inc,</small><br>
+            <small class="text-secondary">Market Street 5th Ave,</small><br>
+            <small class="text-secondary">Sugar Land,TX,43089</small><br>
+            <small class="text-secondary">535-221-6678</small><br>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-md-5 col-12">
+        <div class="mt-3 text-center">
+          <i class="fab fa-facebook-f text-primary pointer mr-xl-5 mr-md-4 mr-4 fa-2x"></i>
+          <i class="fab fa-twitter text-primary pointer mr-xl-5 mr-md-4 mr-4 fa-2x"></i>
+          <i class="fab fa-instagram text-danger pointer mr-xl-5 mr-md-4 mr-4 fa-2x"></i>
+          <i class="fab fa-youtube text-danger pointer fa-2x"></i>
+          <p class="py-2 m-0 theme">CONNECT WITH US</p>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xl-8 col-md-7">
+        <div class="main-video pointer border border-secondary">
+          <i class="fa fa-play-circle fa-4x play-btn pointer theme"></i>
+          <div class="controls">
+            <div class="progress-bar bg-dark">
+              <span class="progress bg-theme"></span>
+            </div>
+            <div class="flex-container space-btw m-2">
+              <span>
+                <i class="fa fa-backward px-1" onclick="handleForwardBackward(0)"></i>
+                <i class="fa fa-play px-1 ctrl-pause-play" onclick="PlayVid()"></i>
+                <i class="fa fa-forward px-1" onclick="handleForwardBackward(1)"></i>
+                <small><span class="cur-time"></span> / <span class="duration"></span></small>
+                <i class="fas fa-redo px-1 ctrl-vidloop"></i>
+                <i class="fa fa-volume-up px-1 ctrl-vol"></i>
+              </span>
+              <span>
+                <select id="playbackspeed" class="px-1" style="outline:none;width: 20px;"
+                  onchange="handlePlayBackSpeed()">
+                  <option value=0.5>0.5x</option>
+                  <option value=0.75>0.75x</option>
+                  <option value=1 selected>1x</option>
+                  <option value=1.25>1.25x</option>
+                  <option value=1.5>1.5x</option>
+                </select>
+                <i class="fa fa-expand px-1 ctrl-fscreen"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="main-vid-title my-3 theme"></div>
+        <div class="main-vid-des mb-3 text-secondary"></div>
+      </div>
+      <div class="col-xl-4 col-md-5">
+        <form class="p-3">
+          <div class="form-group mb-4">
+            <input type="text" class="form-control" id="firstname" placeholder="First name">
+          </div>
+          <div class="form-group mb-4">
+            <input type="text" class="form-control" id="lastname" placeholder="Last name">
+          </div>
+          <div class="form-group mb-4">
+            <input type="email" class="form-control" id="email" placeholder="Email Address">
+          </div>
+          <div class="form-group mb-4">
+            <input type="text" class="form-control" id="phone" placeholder="Phone Number">
+          </div>
+          <div class="form-group mb-4">
+            <textarea type="text" class="form-control" id="comments" rows="3" placeholder="Comments"></textarea>
+          </div>
+          <input type="submit" class="block mt-3 bg-theme py-2" value="Submit">
+          <div class="text-center mt-1">
+            <small class="text-dark">Read out privacy policy before submitting the form</small>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xl-12 col-md-12 mt-3">
+        <div class="carousel-container">
+          <div class="Poster-container">
+          </div>
+          <div class="carousel-ctrls">
+            <i class="fa fa-chevron-circle-left round left fa-2x pointer"></i>
+            <i class="fa fa-chevron-circle-right round right fa-2x pointer"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="bg-theme">
+    <div class="mt-5 p-3">
+      <div class="text-center">
+        <span class="text-light">Copyright 2020. All rights reserved. Terms of Use Privacy policy</span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>
