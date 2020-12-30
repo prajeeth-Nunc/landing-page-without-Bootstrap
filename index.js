@@ -37,6 +37,18 @@ let navbarItems = select("#navbar-items");
 let validators = ["", null, undefined];
 localStorage.setItem("mainVidStatus", 0);
 
+function getVideoInfoData() {
+  return new Promise((resolve, reject) => {
+    fetch("videoInfo.json")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        resolve(data);
+      });
+  });
+}
+
 let currentTheme = localStorage.getItem("theme");
 if (currentTheme) changeThemeColor(currentTheme);
 else changeThemeColor("#86C232");
@@ -74,6 +86,17 @@ fetch("themes.json")
       themesContainer.appendChild(aTag);
     });
   });
+
+function themeBar() {
+  if (
+    themesContainer.style.cssText === "" ||
+    themesContainer.style.cssText === "right: -50px;"
+  ) {
+    themesContainer.style.cssText = "right: 0px;";
+  } else {
+    themesContainer.style.cssText = "right: -50px;";
+  }
+}
 
 function handleNavInMob() {
   let currClasses = Array.from(navbarItems.classList);
@@ -266,7 +289,7 @@ function renderMainVideo(element) {
   mainVideo.insertBefore(video, mainVideo.childNodes[0]);
   currentTime.textContent = "0:00";
   PlayIcon.setAttribute("onclick", "PlayVid()");
-  PlayIcon.style.cssText = "color: " + currentTheme;
+  // PlayIcon.style.cssText = "color: " + currentTheme;
   mainVTitle.textContent = element.Title;
   mainVDes.textContent = element.Description;
   video.onloadedmetadata = () => {
@@ -313,12 +336,6 @@ function renderCarouselImages(
   }
 }
 
-fetch("videoInfo.json")
-  .then((res) => res.json())
-  .then((data) => {
-    localStorage.setItem("Posters", JSON.stringify(data));
-  });
-
 let iTag = document.createElement("i");
 iTag.setAttribute("class", "fa fa-play-circle fa-3x play-btn pointer theme");
 let divTitle = document.createElement("div");
@@ -330,41 +347,43 @@ divDes.setAttribute("class", "vid-des mb-3 text-secondary");
 function videoRender(id = null) {
   progress.style.width = "0%";
   localStorage.setItem("mainVidStatus", 0);
-  let data = JSON.parse(localStorage.getItem("Posters"));
-  let count = data.length;
-  id = id === null ? 1 : id;
-  posterContainer.innerHTML = "";
-  let video = mainVideo.querySelector("video");
+  getVideoInfoData().then((data) => {
+    // let data = JSON.parse(localStorage.getItem("Posters"));
+    let count = data.length;
+    id = id === null ? 1 : id;
+    posterContainer.innerHTML = "";
+    let video = mainVideo.querySelector("video");
 
-  if (video) {
-    const videoId = video.id;
-    let prevVID = data[videoId - 1];
-    data.splice(id - 1, 0, prevVID);
-    if (id - 1 < videoId) {
-      data.splice(videoId, 1);
+    if (video) {
+      const videoId = video.id;
+      let prevVID = data[videoId - 1];
+      data.splice(id - 1, 0, prevVID);
+      if (id - 1 < videoId) {
+        data.splice(videoId, 1);
+      } else {
+        data.splice(videoId - 1, 1);
+      }
+      localStorage.setItem("id", id);
+      data.forEach((element) => {
+        if (element.id === id) {
+          renderMainVideo(element);
+        } else {
+          renderCarouselImages(element, count, iTag, divTitle, divDes, 1);
+        }
+      });
     } else {
-      data.splice(videoId - 1, 1);
+      let mainVID = data.filter((vid) => {
+        return vid.id == id;
+      });
+      data.forEach((element) => {
+        if (element.id === id) {
+          renderMainVideo(mainVID[0]);
+        } else {
+          renderCarouselImages(element, count, iTag, divTitle, divDes, 1);
+        }
+      });
     }
-    localStorage.setItem("id", id);
-    data.forEach((element) => {
-      if (element.id === id) {
-        renderMainVideo(element);
-      } else {
-        renderCarouselImages(element, count, iTag, divTitle, divDes, 1);
-      }
-    });
-  } else {
-    let mainVID = data.filter((vid) => {
-      return vid.id == id;
-    });
-    data.forEach((element) => {
-      if (element.id === id) {
-        renderMainVideo(mainVID[0]);
-      } else {
-        renderCarouselImages(element, count, iTag, divTitle, divDes, 1);
-      }
-    });
-  }
+  });
 }
 
 videoRender();
@@ -445,46 +464,48 @@ let nRight = 1;
 let countRight = 1;
 
 function scrollRight() {
-  let data = JSON.parse(localStorage.getItem("Posters"));
-  let count = data.length - 1;
-  console.log(count);
-  console.log(countLeft);
-  let totalClicks = Math.round((count * nLeft) / itemsPerClick);
-  if (countLeft === totalClicks - 1) {
-    // console.log(totalClicks);
-    let reversedData = data.reverse();
-    reversedData.forEach((element) => {
-      if (element.id === parseInt(video.id)) {
-      } else {
-        renderCarouselImages(element, count, iTag, divTitle, divDes, 0);
-      }
-    });
-    nLeft++;
-    countLeft = 1;
-  }
-  countLeft++;
-  let item = posterContainer.querySelector("div.mr-3");
-  itemWidth = item.clientWidth + 16;
-  posterContainer.scrollLeft -= itemsPerClick * itemWidth;
+  getVideoInfoData().then((data) => {
+    let count = data.length - 1;
+    console.log(count);
+    console.log(countLeft);
+    let totalClicks = Math.round((count * nLeft) / itemsPerClick);
+    if (countLeft === totalClicks - 1) {
+      // console.log(totalClicks);
+      let reversedData = data.reverse();
+      reversedData.forEach((element) => {
+        if (element.id === parseInt(video.id)) {
+        } else {
+          renderCarouselImages(element, count, iTag, divTitle, divDes, 0);
+        }
+      });
+      nLeft++;
+      countLeft = 1;
+    }
+    countLeft++;
+    let item = posterContainer.querySelector("div.mr-3");
+    itemWidth = item.clientWidth + 16;
+    posterContainer.scrollLeft -= itemsPerClick * itemWidth;
+  });
 }
 
 function scrollLeft() {
-  let data = JSON.parse(localStorage.getItem("Posters"));
-  let count = data.length - 1;
-  let totalClicks = Math.round((count * nRight )/ itemsPerClick);
-  if (countRight === totalClicks - 1) {
-    console.log(totalClicks);
-    data.forEach((element) => {
-      if (element.id === parseInt(video.id)) {
-      } else {
-        renderCarouselImages(element, count, iTag, divTitle, divDes, 1);
-      }
-    });
-    nRight++;
-    countRight = 1;
-  }
-  countRight++;
-  let item = posterContainer.querySelector("div.mr-3");
-  itemWidth = item.clientWidth + 16;
-  posterContainer.scrollLeft += itemsPerClick * itemWidth;
+  getVideoInfoData().then((data) => {
+    let count = data.length - 1;
+    let totalClicks = Math.round((count * nRight) / itemsPerClick);
+    if (countRight === totalClicks - 1) {
+      console.log(totalClicks);
+      data.forEach((element) => {
+        if (element.id === parseInt(video.id)) {
+        } else {
+          renderCarouselImages(element, count, iTag, divTitle, divDes, 1);
+        }
+      });
+      nRight++;
+      countRight = 1;
+    }
+    countRight++;
+    let item = posterContainer.querySelector("div.mr-3");
+    itemWidth = item.clientWidth + 16;
+    posterContainer.scrollLeft += itemsPerClick * itemWidth;
+  });
 }
