@@ -314,7 +314,7 @@ function renderCarouselImages(
 ) {
   let divFlexItem = document.createElement("div");
   // poster-item
-  divFlexItem.setAttribute("class", "carousel-cell");
+  divFlexItem.setAttribute("class", "poster-item");
   let divPoster = document.createElement("div");
   divPoster.setAttribute("class", "poster");
   let img = document.createElement("img");
@@ -451,10 +451,6 @@ window.addEventListener("offline", () => {
     }, 3000);
 });
 // Network Status end
-
-
-
-
 
 
 
