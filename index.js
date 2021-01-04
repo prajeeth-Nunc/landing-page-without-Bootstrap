@@ -1,137 +1,127 @@
-let body = document.querySelector("body");
+$(document).ready(function () {
+  localStorage.setItem("mainVidStatus", 0);
+  let currentTheme = localStorage.getItem("theme");
+  if (currentTheme) {
+    changeThemeColor(currentTheme);
+  } else changeThemeColor("#86C232");
 
-function select(selector) {
-  return body.querySelector(selector);
-}
-function selectAll(selector) {
-  return body.querySelectorAll(selector);
-}
+  fetch("themes.json")
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((e) => {
+        aTag = document.createElement("a");
+        let attr = {
+          class: e.class,
+          id: e.id,
+          onclick: "changeThemeColor('" + e.bgcolor + "')",
+        };
+        setAttributes(aTag, attr);
+        aTag.style.cssText =
+          "width: 20px;height: 20px;background: " + e.bgcolor;
+        $(".theme-container").append(aTag);
+      });
+    });
+});
 
-let navbar = select(".navbar");
-let navAtags = selectAll(".navbar a");
-let navLinks = selectAll(".nav-link");
-let footer = select("footer");
-let submit = select("input[type = submit]");
-let themesContainer = select(".theme-container");
-let posterContainer = select(".Poster-container");
-let form = select("form");
-let mainVideo = select(".main-video");
-let mainVTitle = select(".main-vid-title");
-let mainVDes = select(".main-vid-des");
-let left = select(".carousel-ctrls .left");
-let right = select(".carousel-ctrls .right");
-let video = select("video");
-let PlayIcon = mainVideo.querySelector("i.fa-play-circle");
-let controls = select(".controls");
-let volumeCtrl = select(".ctrl-vol");
-let ScreenCtrl = select(".ctrl-fscreen");
-let currentTime = select(".cur-time");
-let vidDuration = select(".duration");
-let progress = select(".progress");
-let progressBar = select(".progress-bar");
-let playPause = select(".ctrl-pause-play");
-let playBack = select("#playbackspeed");
-let videoLoop = select(".ctrl-vidloop");
-let navbarItems = select("#navbar-items");
+let posterContainer = $(".Poster-container")[0];
+let mainVideo = $(".main-video")[0];
+let video = $("video")[0];
+let progressBar = $(".progress-bar")[0];
 
 let validators = ["", null, undefined];
-localStorage.setItem("mainVidStatus", 0);
+let iTag = document.createElement("i");
+iTag.setAttribute("class", "fa fa-play-circle fa-3x play-btn pointer theme");
+let divTitle = document.createElement("div");
+divTitle.setAttribute("class", "vid-title my-3");
+let divDes = document.createElement("div");
+divDes.setAttribute("class", "vid-des mb-3 text-secondary");
 
+// get videosobjects json 
 function getVideoInfoData() {
   return new Promise((resolve, reject) => {
     fetch("videoInfo.json")
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
-        resolve(data);
+        return resolve(data);
       });
   });
 }
+// get videosobjects json end
 
-let currentTheme = localStorage.getItem("theme");
-if (currentTheme) changeThemeColor(currentTheme);
-else changeThemeColor("#86C232");
-
-function changeThemeColor(color) {
-  let themeItems = selectAll(".theme");
-  let bgThemeItems = selectAll(".bg-theme");
-  localStorage.setItem("theme", color);
-  let defaultStyle = "background: " + color + "; color : white;";
-  navAtags.forEach((a) => {
-    a.style.cssText = "color : white";
-  });
-  themeItems.forEach((item) => {
-    item.style.color = color;
-  });
-  bgThemeItems.forEach((item) => {
-    item.style.cssText = defaultStyle;
-  });
-}
-
-// Themes
-fetch("themes.json")
-  .then((res) => res.json())
-  .then((data) => {
-    data.forEach((element) => {
-      aTag = document.createElement("a");
-      let attr = {
-        class: element.class,
-        id: element.id,
-        onclick: "changeThemeColor('" + element.bgcolor + "')",
-      };
-      setAttributes(aTag, attr);
-      aTag.style.cssText =
-        "width: 20px;height: 20px;background: " + element.bgcolor;
-      themesContainer.appendChild(aTag);
-    });
-  });
-
-function themeBar() {
-  if (
-    themesContainer.style.cssText === "" ||
-    themesContainer.style.cssText === "right: -50px;"
-  ) {
-    themesContainer.style.cssText = "right: 0px;";
-  } else {
-    themesContainer.style.cssText = "right: -50px;";
-  }
-}
-
-function handleNavInMob() {
-  let currClasses = Array.from(navbarItems.classList);
-  if (currClasses.includes("show")) {
-    navbarItems.classList.remove("show");
-  } else {
-    navbarItems.classList.add("show");
-  }
-}
-
-navLinks.forEach((link) => {
-  let attr = {
-    onclick: "setNavLinkActive(this)",
-  };
-  setAttributes(link, attr);
-});
-
-function setNavLinkActive(link) {
-  navLinks.forEach((navlink) => {
-    navlink.classList.remove("active");
-  });
-  link.classList.add("active");
-}
-
+// setattributes if multiple
 function setAttributes(tag, attrbs) {
   for (let prop in attrbs) {
     tag.setAttribute(prop, attrbs[prop]);
   }
 }
+// setattributes if multiple end
 
-function handleControlBar(flag) {
-  controls.style.cssText =
-    flag === 1 ? "bottom : 0px;display:block;" : "bottom : -40px;";
+// Theme color change
+let currentTheme = localStorage.getItem("theme");
+if (currentTheme) changeThemeColor(currentTheme);
+else changeThemeColor("#86C232");
+
+function changeThemeColor(color) {
+  localStorage.setItem("theme", color);
+  $(".navbar a").each((index, element) => {
+    element.style.cssText = "color: white";
+  });
+  $(".theme").each((index, element) => {
+    element.style.cssText = "color:" + color;
+  });
+  $(".bg-theme").each((index, element) => {
+    element.style.cssText = "background: " + color + ";color: white;";
+  });
 }
+// Theme color change end
 
+
+// Theme bar UI
+function themeBar() {
+  if (
+    $(".theme-container")[0].style.cssText === "" ||
+    $(".theme-container")[0].style.cssText === "right: -50px;"
+  ) {
+    $(".theme-container")[0].style.cssText = "right: 0px;";
+  } else {
+    $(".theme-container")[0].style.cssText = "right: -50px;";
+  }
+}
+// Theme bar UI end
+
+// smaller devices Navbar handling
+function handleNavInMob() {
+  let currClasses = Array.from($("#navbar-items")[0].classList);
+  if (currClasses.includes("show")) {
+    $("#navbar-items").removeClass("show");
+  } else {
+    $("#navbar-items").addClass("show");
+  }
+}
+// smaller devices Navbar handling end 
+
+// set Nav link Active
+$(".nav-link").each((index,element) => {
+  element.setAttribute("onclick", "setNavLinkActive(this)");
+});
+function setNavLinkActive(link) {
+  $(".nav-link").each((index,element) => {
+    element.classList.remove("active");
+  });
+  link.classList.add("active");
+}
+// set Nav link Active end
+
+
+// Video controlBar  
+function handleControlBar(flag) {
+  flag === 1
+    ? $(".controls").css({ bottom: "0px", display: "block" })
+    : $(".controls").css({ bottom: "-40px" });
+}
+// Video controlBar End
+
+// Format current time
 function getTime(time) {
   let minutes = parseInt(Math.round(time) / 60, 10);
   let seconds = Math.round(time % 60).toString();
@@ -139,63 +129,71 @@ function getTime(time) {
     seconds.length === 1 ? "0" + seconds : seconds === 60 ? "00" : seconds;
   return minutes + ":" + seconds;
 }
+// Format current time End
 
+// video ProgressBar 
 function handleProgress() {
   setInterval(() => {
-    currentTime.textContent = getTime(video.currentTime);
-    progress.style.width =
-      Math.round((video.currentTime / video.duration) * 100) + "%";
-  }, 1000);
+    $(".cur-time").text(getTime(video.currentTime));
+    $(".progress").css(
+      { width: Math.round((video.currentTime / video.duration) * 100) + "%" },
+      1000
+    );
+  });
 }
+// video ProgressBar end
 
-progressBar.addEventListener("click", handlePlayFrmHere);
-
-function handlePlayFrmHere(e) {
+// Video play from clicked position
+$(".progress-bar").click(function handlePlayFrmHere(e) {
   let position = Math.round((e.offsetX / progressBar.clientWidth) * 100);
-  // console.log(position);
   video.currentTime = (video.duration * position) / 100;
-  progress.style.width = position + "%";
-}
+  $(".progress").css({ width: position + "%" });
+});
+// Video play from clicked position end
 
+// Play Video
 function PlayVid() {
   let flag = parseInt(localStorage.getItem("mainVidStatus"));
   if (flag === 1) {
     localStorage.setItem("mainVidStatus", 0);
-    PlayIcon.style.cssText = "visibility:visible; transition: all 0.2s;";
+    $(".main-video i.fa-play-circle").css({
+      visibility: "visible",
+      transition: "all 0.2s",
+    });
     video.pause();
-    playPause.classList.remove("fa-pause");
-    playPause.classList.add("fa-play");
-    // console.log(playPause);
+    $(".ctrl-pause-play").removeClass("fa-pause").addClass("fa-play");
   } else {
     localStorage.setItem("mainVidStatus", 1);
-    PlayIcon.style.cssText = "visibility:hidden; transition: all 0.2s;";
+    $(".main-video i.fa-play-circle").css({
+      visibility: "hidden",
+      transition: "all 0.2s",
+    });
     video.play();
-    playPause.classList.remove("fa-play");
-    playPause.classList.add("fa-pause");
+    $(".ctrl-pause-play").removeClass("fa-play").addClass("fa-pause");
   }
 }
+// Play Video end
 
-volumeCtrl.addEventListener("click", ctrlVolume);
-
-function ctrlVolume() {
-  let currClasses = Array.from(volumeCtrl.classList);
+// video Volume control
+$(".ctrl-vol").click(function ctrlVolume() {
+  let currClasses = Array.from($(".ctrl-vol")[0].classList);
   if (currClasses.includes("fa-volume-up")) {
-    volumeCtrl.classList.remove("fa-volume-up");
-    volumeCtrl.classList.add("fa-volume-mute");
+    $(".ctrl-vol").removeClass("fa-volume-up").addClass("fa-volume-mute");
     video.muted = true;
   } else if (currClasses.includes("fa-volume-mute")) {
-    volumeCtrl.classList.remove("fa-volume-mute");
-    volumeCtrl.classList.add("fa-volume-up");
+    $(".ctrl-vol").removeClass("fa-volume-mute").addClass("fa-volume-up");
     video.muted = false;
   }
-}
+});
+// video Volume control end
 
-ScreenCtrl.addEventListener("click", handleFullScreenVid);
-
-function handleFullScreenVid() {
-  // console.log(screen.orientation);
-  let currClasses = Array.from(ScreenCtrl.classList);
+// Video FullScreen Control
+$(".ctrl-fscreen").click(function handleFullScreenVid() {
+  let currClasses = Array.from($(".ctrl-fscreen")[0].classList);
   if (currClasses.includes("fa-expand")) {
+    // if (screen.orientation.type === "landscape" || "landscape-primary") {
+    //   screen.orientation.lock("potrait");
+    // }
     if (mainVideo.requestFullscreen) {
       mainVideo.requestFullscreen();
     } else if (mainVideo.webkitRequestFullscreen) {
@@ -203,9 +201,11 @@ function handleFullScreenVid() {
     } else if (mainVideo.msRequestFullscreen) {
       mainVideo.msRequestFullscreen();
     }
-    ScreenCtrl.classList.remove("fa-expand");
-    ScreenCtrl.classList.add("fa-compress");
+    $(".ctrl-fscreen").removeClass("fa-expand").addClass("fa-compress");
   } else if (currClasses.includes("fa-compress")) {
+    // if (screen.orientation.type === "potrait" || "potrait-primary") {
+    //   screen.orientation.lock("landscape");
+    // }
     if (document.exitFullscreen) {
       document.exitFullscreen();
     } else if (document.webkitExitFullscreen) {
@@ -213,21 +213,21 @@ function handleFullScreenVid() {
     } else if (document.msExitFullscreen) {
       document.msExitFullscreen();
     }
-    ScreenCtrl.classList.remove("fa-compress");
-    ScreenCtrl.classList.add("fa-expand");
-  }
-}
+    $(".ctrl-fscreen").removeClass("fa-compress").addClass("fa-expand");
 
+  }
+});
+// Video FullScreen Control end
+
+// OnVideo finished
 function handleVidFinish() {
-  // console.log("video finished");
-  playPause.classList.remove("fa-pause");
-  playPause.classList.add("fa-play");
+  $(".ctrl-pause-play").removeClass("fa-pause").addClass("fa-play");
   localStorage.setItem("mainVidStatus", 0);
 }
+// OnVideo finished end
 
-document.addEventListener("keydown", handleKeypressEvents);
-
-function handleKeypressEvents(e) {
+// video forwarding and backwarding
+document.addEventListener("keydown", function handleKeypressEvents(e) {
   switch (e.keyCode) {
     case 37:
       video.currentTime -= 5;
@@ -238,7 +238,7 @@ function handleKeypressEvents(e) {
     default:
       console.log(e.keyCode);
   }
-}
+});
 
 function handleForwardBackward(flag) {
   if (flag === 1) {
@@ -247,25 +247,28 @@ function handleForwardBackward(flag) {
     video.currentTime -= 5;
   }
 }
+// video forwarding and backwarding
 
-videoLoop.addEventListener("click", handleVideoLoop);
 
-function handleVideoLoop() {
+// video looping
+$(".ctrl-vidloop").click(function handleVideoLoop() {
   if (video.loop) {
     video.loop = false;
-    videoLoop.style.color = "white";
+    $(".ctrl-vidloop").css({ color: "white" });
   } else {
     video.loop = true;
-    videoLoop.style.color = "dodgerblue";
+    $(".ctrl-vidloop").css({ color: "dodgerblue" });
   }
-}
+});
+// video looping end
 
-playBack.addEventListener("onchange", handlePlayBackSpeed);
+// Playback speed controls
+$("#playbackspeed").change(function handlePlayBackSpeed() {
+  video.playbackRate = $("#playbackspeed").val();
+});
+// Playback speed controls end
 
-function handlePlayBackSpeed() {
-  video.playbackRate = playBack.value;
-}
-
+// mainVideo render UI
 function renderMainVideo(element) {
   if (video) {
   } else {
@@ -287,18 +290,20 @@ function renderMainVideo(element) {
   };
   setAttributes(mainVideo, attr);
   mainVideo.insertBefore(video, mainVideo.childNodes[0]);
-  currentTime.textContent = "0:00";
-  PlayIcon.setAttribute("onclick", "PlayVid()");
-  // PlayIcon.style.cssText = "color: " + currentTheme;
-  mainVTitle.textContent = element.Title;
-  mainVDes.textContent = element.Description;
+  $(".cur-time").text("0:00");
+  $("i.fa-play-circle").attr("onclick", "PlayVid()");
+  $("i.fa-play-circle").css({ color: currentTheme });
+  $(".main-vid-title").text(element.Title);
+  $(".main-vid-des").text(element.Description);
   video.onloadedmetadata = () => {
     let minutes = parseInt(video.duration / 60, 10);
     let seconds = Math.round(video.duration % 60);
-    vidDuration.textContent = minutes + ":" + seconds;
+    $(".duration").text(minutes + ":" + seconds);
   };
 }
+// mainVideo render UI end
 
+// render Carousel images 
 function renderCarouselImages(
   element,
   count,
@@ -308,10 +313,8 @@ function renderCarouselImages(
   renderFlag
 ) {
   let divFlexItem = document.createElement("div");
-  // if (parseInt(element.id) !== count) {
-  //   divFlexItem.setAttribute("class", "mr-3");
-  // }
-  divFlexItem.setAttribute("class", "mr-3");
+  // poster-item
+  divFlexItem.setAttribute("class", "carousel-cell");
   let divPoster = document.createElement("div");
   divPoster.setAttribute("class", "poster");
   let img = document.createElement("img");
@@ -328,32 +331,23 @@ function renderCarouselImages(
   divPoster.innerHTML += img.outerHTML + iTag.outerHTML;
   divFlexItem.innerHTML +=
     divPoster.outerHTML + divTitle.outerHTML + divDes.outerHTML;
-  // console.log(renderFlag ? "appending" : "prepending");
   if (renderFlag === 0) {
     posterContainer.insertBefore(divFlexItem, posterContainer.childNodes[0]);
   } else {
     posterContainer.appendChild(divFlexItem);
   }
 }
+// render Carousel images end
 
-let iTag = document.createElement("i");
-iTag.setAttribute("class", "fa fa-play-circle fa-3x play-btn pointer theme");
-let divTitle = document.createElement("div");
-divTitle.setAttribute("class", "vid-title my-3 theme");
-let divDes = document.createElement("div");
-divDes.setAttribute("class", "vid-des mb-3 text-secondary");
-
-// Video
+// swapping video with carousel posters
 function videoRender(id = null) {
-  progress.style.width = "0%";
+  $(".progress").css({ width: "0%" });
   localStorage.setItem("mainVidStatus", 0);
   getVideoInfoData().then((data) => {
-    // let data = JSON.parse(localStorage.getItem("Posters"));
     let count = data.length;
     id = id === null ? 1 : id;
-    posterContainer.innerHTML = "";
+    $(".Poster-container").text("");
     let video = mainVideo.querySelector("video");
-
     if (video) {
       const videoId = video.id;
       let prevVID = data[videoId - 1];
@@ -385,70 +379,89 @@ function videoRender(id = null) {
     }
   });
 }
+// swapping video with carousel posters
 
 videoRender();
 
-// Form
-form.addEventListener("submit", validate);
 
-function validate(e) {
+// Form
+$("form").submit(function validate(e) {
   e.preventDefault();
-  let expMsgs = document.querySelectorAll(".form-group small");
-  expMsgs.forEach((element) => {
-    element.textContent = "";
+  document.querySelectorAll(".form-group small").forEach((smallTag) => {
+    smallTag.textContent = "";
   });
+  var formgroup;
 
   let small = document.createElement("small");
   small.setAttribute("class", "text-danger");
 
-  let firstnameInp = form.querySelector("#firstname");
-  let lastnameInp = form.querySelector("#lastname");
-  let emailInp = form.querySelector("#email");
-  let phoneInp = form.querySelector("#phone");
-  let commentsInp = form.querySelector("#comments");
-
-  let fstname = firstnameInp.value;
-  let lstname = lastnameInp.value;
-  let email = emailInp.value;
-  let phno = phoneInp.value;
-  let cmts = commentsInp.value;
+  let fstname = $("#firstname").val();
+  let lstname = $("#lastname").val();
+  let email = $("#email").val();
+  let phno = $("#phone").val();
+  let cmts = $("#comments").val();
 
   let emailRegex = /^.*[@].*[.].*$/;
 
   if (validators.includes(fstname)) {
-    formgroup = firstnameInp.parentElement;
+    formgroup = $("#firstname").parent();
     small.textContent = "Please Enter First Name";
-    formgroup.appendChild(small);
   } else if (validators.includes(lstname)) {
-    formgroup = lastnameInp.parentElement;
+    formgroup = $("#lastname").parent();
     small.textContent = "Please Enter Last Name";
-    formgroup.appendChild(small);
   } else if (validators.includes(email)) {
-    formgroup = emailInp.parentElement;
+    formgroup = $("#email").parent();
     small.textContent = "Please Enter Email Address";
-    formgroup.appendChild(small);
   } else if (validators.includes(phno)) {
-    formgroup = phoneInp.parentElement;
+    formgroup = $("#phone").parent();
     small.textContent = "Please Enter Phone Number";
-    formgroup.appendChild(small);
   } else if (phno.length !== 10) {
-    formgroup = phoneInp.parentElement;
+    formgroup = $("#phone").parent();
     small.textContent = "Invalid Phone Number.Must be 10 digits";
-    formgroup.appendChild(small);
   } else {
     if (email.match(emailRegex)) {
       console.log("Submit form");
     } else {
-      formgroup = emailInp.parentElement;
+      formgroup = $("#email").parent();
       small.textContent = "Invalid Email Address";
-      formgroup.appendChild(small);
     }
   }
-}
+  if(formgroup !== undefined){
+    formgroup.append(small);
+  }
+});
+// Form end
 
-// Carousel images
-left.addEventListener("click", scrollRight);
-right.addEventListener("click", scrollLeft);
+// Network Status
+window.addEventListener("online", () => {
+  $(".network-status small").text("You are now connected to the network.");
+  ($(".network-status")[0].style.cssText =
+    "transform : translateY(0px);background : green;"),
+    setTimeout(() => {
+      $(".network-status")[0].style.cssText = "transform : translateY(-35px);";
+    }, 3000);
+});
+
+window.addEventListener("offline", () => {
+  $(".network-status small").text("Offline! No internet");
+  ($(".network-status")[0].style.cssText =
+    "transform : translateY(0px);background : red;"),
+    setTimeout(() => {
+      $(".network-status")[0].style.cssText = "transform : translateY(-35px);";
+    }, 3000);
+});
+// Network Status end
+
+
+
+
+
+
+
+
+// Cyclic Carousel images
+// $(".carousel-ctrls .left").click(scrollRight);
+// $(".carousel-ctrls .right").click(scrollLeft);
 
 // window.addEventListener("resize", handlePosterContainer);
 
@@ -466,11 +479,8 @@ let countRight = 1;
 function scrollRight() {
   getVideoInfoData().then((data) => {
     let count = data.length - 1;
-    console.log(count);
-    console.log(countLeft);
     let totalClicks = Math.round((count * nLeft) / itemsPerClick);
     if (countLeft === totalClicks - 1) {
-      // console.log(totalClicks);
       let reversedData = data.reverse();
       reversedData.forEach((element) => {
         if (element.id === parseInt(video.id)) {
@@ -482,9 +492,8 @@ function scrollRight() {
       countLeft = 1;
     }
     countLeft++;
-    let item = posterContainer.querySelector("div.mr-3");
-    itemWidth = item.clientWidth + 16;
-    posterContainer.scrollLeft -= itemsPerClick * itemWidth;
+    let item = posterContainer.querySelector(".poster-item");
+    posterContainer.scrollLeft -= itemsPerClick * item.clientWidth;
   });
 }
 
@@ -493,7 +502,6 @@ function scrollLeft() {
     let count = data.length - 1;
     let totalClicks = Math.round((count * nRight) / itemsPerClick);
     if (countRight === totalClicks - 1) {
-      console.log(totalClicks);
       data.forEach((element) => {
         if (element.id === parseInt(video.id)) {
         } else {
@@ -504,8 +512,7 @@ function scrollLeft() {
       countRight = 1;
     }
     countRight++;
-    let item = posterContainer.querySelector("div.mr-3");
-    itemWidth = item.clientWidth + 16;
-    posterContainer.scrollLeft += itemsPerClick * itemWidth;
+    let item = posterContainer.querySelector(".poster-item");
+    posterContainer.scrollLeft += itemsPerClick * item.clientWidth;
   });
 }
