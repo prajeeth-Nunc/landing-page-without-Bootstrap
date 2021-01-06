@@ -829,6 +829,7 @@ input[type="submit"]{
         position: relative;
     }
     #navbar-items {
+        /* display: none; */
         width: 100%;
         background: rgba(0, 0, 0, .9);
         position: absolute;
@@ -847,9 +848,6 @@ input[type="submit"]{
 }
 
 
-.show{
-    display: block;
-}
 
 .network-status{
     background: grey;
@@ -921,12 +919,19 @@ input[type="submit"]{
     .poster-item {
         flex: 0 0 33.33%;
     }
+    .show {
+        display: block;
+    }
 }
 
 @media (max-width:576px) {
     .poster-item {
         flex: 0 0 50%;
     }
+    .nav-item{
+        display: none;
+    }
+    
 }
 
 @media (max-width:320px) {
