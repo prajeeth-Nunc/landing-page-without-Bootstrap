@@ -30,13 +30,13 @@ let progressBar = $(".progress-bar")[0];
 
 let validators = ["", null, undefined];
 let iTag = document.createElement("i");
-iTag.setAttribute("class", "fa fa-play-circle fa-3x play-btn pointer theme");
+iTag.setAttribute("class", "fa fa-play-circle fa-3x play-btn theme");
 let divTitle = document.createElement("div");
 divTitle.setAttribute("class", "vid-title my-3");
 let divDes = document.createElement("div");
 divDes.setAttribute("class", "vid-des mb-3 text-secondary");
 
-// get videosobjects json 
+// get videosobjects json
 function getVideoInfoData() {
   return new Promise((resolve, reject) => {
     fetch("videoInfo.json")
@@ -75,7 +75,6 @@ function changeThemeColor(color) {
 }
 // Theme color change end
 
-
 // Theme bar UI
 function themeBar() {
   if (
@@ -98,22 +97,21 @@ function handleNavInMob() {
     $("#navbar-items").addClass("show");
   }
 }
-// smaller devices Navbar handling end 
+// smaller devices Navbar handling end
 
 // set Nav link Active
-$(".nav-link").each((index,element) => {
+$(".nav-link").each((index, element) => {
   element.setAttribute("onclick", "setNavLinkActive(this)");
 });
 function setNavLinkActive(link) {
-  $(".nav-link").each((index,element) => {
+  $(".nav-link").each((index, element) => {
     element.classList.remove("active");
   });
   link.classList.add("active");
 }
 // set Nav link Active end
 
-
-// Video controlBar  
+// Video controlBar
 function handleControlBar(flag) {
   flag === 1
     ? $(".controls").css({ bottom: "0px", display: "block" })
@@ -131,7 +129,7 @@ function getTime(time) {
 }
 // Format current time End
 
-// video ProgressBar 
+// video ProgressBar
 function handleProgress() {
   setInterval(() => {
     $(".cur-time").text(getTime(video.currentTime));
@@ -214,7 +212,6 @@ $(".ctrl-fscreen").click(function handleFullScreenVid() {
       document.msExitFullscreen();
     }
     $(".ctrl-fscreen").removeClass("fa-compress").addClass("fa-expand");
-
   }
 });
 // Video FullScreen Control end
@@ -248,7 +245,6 @@ function handleForwardBackward(flag) {
   }
 }
 // video forwarding and backwarding
-
 
 // video looping
 $(".ctrl-vidloop").click(function handleVideoLoop() {
@@ -303,7 +299,7 @@ function renderMainVideo(element) {
 }
 // mainVideo render UI end
 
-// render Carousel images 
+// render Carousel images
 function renderCarouselImages(
   element,
   count,
@@ -383,7 +379,6 @@ function videoRender(id = null) {
 
 videoRender();
 
-
 // Form
 $("form").submit(function validate(e) {
   e.preventDefault();
@@ -426,7 +421,7 @@ $("form").submit(function validate(e) {
       small.textContent = "Invalid Email Address";
     }
   }
-  if(formgroup !== undefined){
+  if (formgroup !== undefined) {
     formgroup.append(small);
   }
 });
@@ -452,63 +447,57 @@ window.addEventListener("offline", () => {
 });
 // Network Status end
 
-
-
-
 // Cyclic Carousel images
-// $(".carousel-ctrls .left").click(scrollRight);
-// $(".carousel-ctrls .right").click(scrollLeft);
+$(window).resize(() => {
+  if ($(this).width() <= 320) {
+    images = 1;
+  } else if ($(this).width() <= 576) {
+    images = 2;
+  } else if ($(this).width() <= 768) {
+    images = 3;
+  } else if ($(this).width() <= 992) {
+    images = 4;
+  } else if ($(this).width() > 992) {
+    images = 4;
+  }
+  localStorage.setItem("itemsPerClick", images);
+});
 
-// window.addEventListener("resize", handlePosterContainer);
 
-// function handlePosterContainer() {
-//   let totWidth = posterContainer.offsetWidth;
-//   console.log(totWidth);
-// }
+let count = 1;
 
-let itemsPerClick = 3;
-let countLeft = 1;
-let nLeft = 1;
-let nRight = 1;
-let countRight = 1;
-
-function scrollRight() {
+$(".left").click(() => {
   getVideoInfoData().then((data) => {
-    let count = data.length - 1;
-    let totalClicks = Math.round((count * nLeft) / itemsPerClick);
-    if (countLeft === totalClicks - 1) {
-      let reversedData = data.reverse();
-      reversedData.forEach((element) => {
-        if (element.id === parseInt(video.id)) {
-        } else {
-          renderCarouselImages(element, count, iTag, divTitle, divDes, 0);
-        }
-      });
-      nLeft++;
-      countLeft = 1;
+    let totalImages = data.length - 1;
+    let itemsPerClick = localStorage.getItem("itemsPerClick");
+    itemsPerClick = itemsPerClick ? itemsPerClick : 4;
+    // console.log("itemsPerClick :", itemsPerClick);
+    let scrollcount = Math.ceil(totalImages / itemsPerClick);
+    // console.log("scrollcount : ", scrollcount);
+    if (count === 1) {
+      posterContainer.scrollLeft += posterContainer.scrollWidth;
+      count = scrollcount;
+    } else {
+      posterContainer.scrollLeft -= posterContainer.clientWidth;
+      count--;
     }
-    countLeft++;
-    let item = posterContainer.querySelector(".poster-item");
-    posterContainer.scrollLeft -= itemsPerClick * item.clientWidth;
   });
-}
+});
 
-function scrollLeft() {
+$(".right").click(() => {
   getVideoInfoData().then((data) => {
-    let count = data.length - 1;
-    let totalClicks = Math.round((count * nRight) / itemsPerClick);
-    if (countRight === totalClicks - 1) {
-      data.forEach((element) => {
-        if (element.id === parseInt(video.id)) {
-        } else {
-          renderCarouselImages(element, count, iTag, divTitle, divDes, 1);
-        }
-      });
-      nRight++;
-      countRight = 1;
+    let totalImages = data.length - 1;
+    let itemsPerClick = localStorage.getItem("itemsPerClick");
+    itemsPerClick = itemsPerClick ? itemsPerClick : 4;
+    // console.log("itemsPerClick :", itemsPerClick);
+    let scrollcount = Math.ceil(totalImages / itemsPerClick);
+    // console.log("scrollcount : ", scrollcount);
+    if (count >= scrollcount) {
+      posterContainer.scrollLeft = 0;
+      count = 1;
+    } else {
+      posterContainer.scrollLeft += posterContainer.clientWidth;
+      count++;
     }
-    countRight++;
-    let item = posterContainer.querySelector(".poster-item");
-    posterContainer.scrollLeft += itemsPerClick * item.clientWidth;
   });
-}
+});

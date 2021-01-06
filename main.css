@@ -12,6 +12,12 @@ body {
 .text-danger{
     color: red;
 }
+.bg-dark {
+    background: black;
+}
+.text-dark{
+    color: black;
+}
 .card {
     background: white;
     border-radius: 3px;
@@ -643,8 +649,9 @@ body {
     z-index: 1;
 }
 video {
+    width: 100%;
     outline: none;
-    border :1px solid rgba(0, 0, 0, 0.7);
+    /* border :1px solid rgba(0, 0, 0, 0.7); */
 }
 video[poster] {
     object-fit: cover;
@@ -687,35 +694,27 @@ img:hover {
     margin-left: -15px;
 }
 
-.main-video,
-.poster {
+.main-video {
     display: flex;
+    /* width: 100%; */
     position: relative;
     overflow: hidden;
-}
-
-.main-video .play-btn {
-    position: absolute;
-}
-
-.play-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    border-radius: 50rem !important;
+    cursor: pointer;
 }
 
 .main-vid-title,
 .vid-title {
+    margin: 1rem 0.5rem 0rem;
     font-size: 1.2rem;
     font-weight: 500;
+    text-transform: capitalize;
 }
 
 .main-vid-des,
 .vid-des {
     font-size: .8rem;
+    margin: 1.2rem 0.5rem;
+    text-indent: 30px;
 }
 
 .controls {
@@ -747,24 +746,50 @@ img:hover {
 }
 
 .carousel-container {
+    display: flex;
     position: relative;
 }
 
 .Poster-container {
-    position: relative;
+    background: #fff;
     display: flex;
-    overflow: scroll;
-    /* overflow: hidden; */
+    overflow: hidden;
     scroll-behavior: smooth;
-    scrollbar-width: none;
-    transition: all 2s;
+}
+
+.poster-item {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 33.33%;
+    padding-right: 1%;
+}
+.poster-item:last-child {
+    padding-right: 0;
+}
+
+.poster {
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+.play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    color: dodgerblue;
+    background: white;
+    border-radius: 50rem;
 }
 
 img {
-    width: 400px;
-    height: 200px;
+    width: 100%;
+    height: 180px;
+    cursor: pointer;
+    border-radius: 2px;
     object-fit: cover;
-    /* border-radius: 3px; */
 }
 
 .form-control{
@@ -799,30 +824,6 @@ input[type="submit"]{
     width: 100%;
 }
 
-.carousel-ctrls .left,
-.carousel-ctrls .right {
-    position: absolute;
-    background: white;
-    color: black;
-}
-
-.carousel-ctrls .left:hover,
-.carousel-ctrls .right:hover {
-    background: white;
-    color: rgba(0, 0, 0, 0.7);
-}
-.carousel-ctrls .left {
-    top: 27%;
-    left: -1.5%;
-    transform: translate(-1.5%, -27%);
-}
-
-.carousel-ctrls .right {
-    top: 27%;
-    right: -1.5%;
-    transform: translate(-1.5%, -27%);
-}
-
 @media (max-width:768px) {
     #navbar {
         position: relative;
@@ -846,25 +847,6 @@ input[type="submit"]{
 }
 
 
-@media (max-width:580px) {
-    img {
-        width: 200px;
-        height: 120px;
-    }
-
-    .carousel-ctrls .left {
-        top: 14%;
-        left: -1.5%;
-        transform: translate(-1.5%, -14%);
-    }
-
-    .carousel-ctrls .right {
-        top: 14%;
-        right: -1.5%;
-        transform: translate(-1.5%, -14%);
-    }
-}
-
 .show{
     display: block;
 }
@@ -879,13 +861,89 @@ input[type="submit"]{
 }
 
 
-/*  */
-.carousel {
-    background: #FAFAFA;
+.carousel-container .left {
+    position: absolute;
+    top: 20%;
+    left: -1.1%;
+    transform: translate(-1.1%, -20%);
 }
 
-.carousel-cell {
-    width: 100%;
-    min-height: 200px;
+.carousel-container .right {
+    position: absolute;
+    top: 20%;
+    right: -1.1%;
+    transform: translate(-1.1%, -20%);
 }
 
+.left,
+.right {
+    cursor: pointer;
+    color: black;
+    background: white;
+    border-radius: 50rem;
+}
+
+.left:hover,
+.right:hover {
+    color: #333;
+}
+
+@media (min-width:992px) {
+    .poster-item {
+        flex: 0 0 25%;
+    }
+}
+
+@media (max-width:992px) {
+
+    .poster-item {
+        flex: 0 0 25%;
+    }
+
+    img {
+        height: 120px;
+    }
+
+    .carousel-container .left {
+        top: 12%;
+        left: -1.1%;
+        transform: translate(-1.1%, -12%);
+    }
+
+    .carousel-container .right {
+        top: 12%;
+        right: -1.1%;
+        transform: translate(-1.1%, -12%);
+    }
+}
+
+@media (max-width:768px) {
+    .poster-item {
+        flex: 0 0 33.33%;
+    }
+}
+
+@media (max-width:576px) {
+    .poster-item {
+        flex: 0 0 50%;
+    }
+}
+
+@media (max-width:320px) {
+    .poster-item {
+        flex: 0 0 100%;
+        padding-right: 0;
+    }
+
+    .carousel-container .left {
+        top: 13%;
+        left: -1.1%;
+        transform: translate(-1.1%, -13%);
+    }
+
+    .carousel-container .right {
+        top: 13%;
+        right: -1.1%;
+        transform: translate(-1.1%, -13%);
+    }
+}
