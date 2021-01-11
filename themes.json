@@ -1,31 +1,31 @@
 [
   {
     "id": "1",
-    "class": "round m-2 border border-dark pointer",
+    "class": "theme-item",
     "bgcolor": "orangered",
     "color":"white"
   },
   {
     "id": "2",
-    "class": "round m-2 border border-dark pointer",
+    "class": "theme-item",
     "bgcolor": "DodgerBlue",
     "color":"white"
   },
   {
     "id": "3",
-    "class": "round m-2 border border-dark pointer",
+    "class": "theme-item",
     "bgcolor": "CadetBlue",
     "color":"white"
   },
   {
     "id": "4",
-    "class": "round m-2 border border-dark pointer",
+    "class": "theme-item",
     "bgcolor": "#86C232",
     "color":"#222629"
   },
   {
     "id": "5",
-    "class": "round m-2 border border-dark pointer",
+    "class": "theme-item",
     "bgcolor": "MediumSlateBlue",
     "color":"white"
   }

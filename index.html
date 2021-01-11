@@ -12,12 +12,11 @@
 </head>
 
 <body>
-  <!-- fixed-top flex-container -->
   <nav class="navbar bg-theme fixed-top">
     <div class="container flex-container space-btw">
       <a class="nav-brand">Ford ECO SPORT 2020</a>
       <a class="hamburger" onclick="handleNavInMob()"><i class="fa fa-bars"></i></a>
-      <div id="navbar-items" class="navbar-nav show">
+      <div id="navbar-items" class="navbar-nav">
         <ul class="nav-items">
           <li>
             <a class="nav-link active">Home</a>
@@ -35,12 +34,12 @@
       </div>
     </div>
   </nav>
+  <div class="network-status"><small></small></div>
   
-  <div class="container" style="margin-top: 4rem;">
+  <div class="container" style="margin-top: 3.6rem;">
     <div class="theme-container card fas" onclick="themeBar()"></div>
-    <div class="network-status"><small></small></div>
-    <div class="row pt-3 flex-container ">
-      <div class="col-xl-7 col-md-7 col-12">
+    <div class="row pt-4 flex-container ">
+      <div class="col-xl-8 col-md-7 col-sm-6 col-12">
         <div class="flex-container user-details ">
           <i class="fa fa-user-circle fa-5x text-secondary mx-3"
             style="background: white; border-radius:50rem!important;"></i>
@@ -54,7 +53,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xl-5 col-md-5 col-12">
+      <div class="col-xl-4 col-md-5  col-sm-6 col-12">
         <div class="mt-3 text-center">
           <i class="fab fa-facebook-f text-primary pointer mr-4 fa-2x"></i>
           <i class="fab fa-twitter text-primary pointer mr-4 fa-2x"></i>
@@ -64,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div class="row mt-4 ">
+    <div class="row pt-4 ">
       <div class="col-xl-8 col-md-7">
         <!-- border border-secondary -->
         <div class="main-video">
@@ -75,23 +74,23 @@
             </div>
             <div class="flex-container space-btw m-2">
               <span>
-                <i class="fa fa-backward px-1" onclick="handleForwardBackward(0)"></i>
-                <i class="fa fa-play px-1 ctrl-pause-play" onclick="PlayVid()"></i>
-                <i class="fa fa-forward px-1" onclick="handleForwardBackward(1)"></i>
+                <i class="fa fa-backward px-2" onclick="handleForwardBackward(0)"></i>
+                <i class="fa fa-play px-2 ctrl-pause-play" onclick="PlayVid()"></i>
+                <i class="fa fa-forward px-2" onclick="handleForwardBackward(1)"></i>
+
                 <small><span class="cur-time"></span> / <span class="duration"></span></small>
-                <i class="fas fa-redo px-1 ctrl-vidloop"></i>
-                <i class="fa fa-volume-up px-1 ctrl-vol"></i>
+                <i class="fas fa-redo px-2 ctrl-vidloop"></i>
+                <i class="fa fa-volume-up px-2 ctrl-vol"></i>
               </span>
               <span>
-                <select id="playbackspeed" class="px-1" style="outline:none;width: 20px;"
-                  onchange="handlePlayBackSpeed()">
+                <select id="playbackspeed" class="px-2" style="outline:none;">
                   <option value=0.5>0.5x</option>
                   <option value=0.75>0.75x</option>
                   <option value=1 selected>1x</option>
                   <option value=1.25>1.25x</option>
                   <option value=1.5>1.5x</option>
                 </select>
-                <i class="fa fa-expand px-1 ctrl-fscreen"></i>
+                <i class="fa fa-expand px-3 ctrl-fscreen"></i>
               </span>
             </div>
           </div>
@@ -100,30 +99,34 @@
         <div class="main-vid-des text-secondary"></div>
       </div>
       <div class="col-xl-4 col-md-5">
-        <form class="p-4" novalidate>
+        <form class="p-4 bg-theme" novalidate>
           <div class="form-group mb-4">
             <input type="text" class="form-control" id="firstname" placeholder="First name">
+            <small></small>
           </div>
           <div class="form-group mb-4">
             <input type="text" class="form-control" id="lastname" placeholder="Last name">
+            <small></small>
           </div>
           <div class="form-group mb-4">
             <input type="email" class="form-control" id="email" placeholder="Email Address">
+            <small></small>
           </div>
           <div class="form-group mb-4">
-            <input type="text" class="form-control" id="phone" placeholder="Phone Number">
+            <input type="text" class="form-control" id="phone" placeholder="Phone Number" onkeydown="validatePhoneNumber(event)">
+            <small></small>
           </div>
           <div class="form-group mb-4">
             <textarea type="text" class="form-control" id="comments" rows="3" placeholder="Comments"></textarea>
           </div>
-          <input type="submit" class="block mt-3 bg-theme py-2" value="Submit">
+          <input type="submit" class="block mt-3 py-2" value="Submit">
           <div class="text-center mt-1">
             <small class="text-dark">Read out privacy policy before submitting the form</small>
           </div>
         </form>
       </div>
     </div>
-    <div class="row mt-4 ">
+    <div class="row pt-4 ">
       <div class="col-xl-12 col-md-12 mt-3">
         <div class="carousel-container">
           <div class="Poster-container" >
